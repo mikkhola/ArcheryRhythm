@@ -1,0 +1,30 @@
+.training-root {
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.training-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+    .training-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.countdown {
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.0;
+}
+
+.training-controls {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+

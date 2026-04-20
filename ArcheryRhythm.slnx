@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ArcheryRhythm.Client/ArcheryRhythm.Client.csproj" />
+    <Project Path="src/ArcheryRhythm.Core/ArcheryRhythm.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ArcheryRhythm.Tests/ArcheryRhythm.Tests.csproj" />
+  </Folder>
+</Solution>

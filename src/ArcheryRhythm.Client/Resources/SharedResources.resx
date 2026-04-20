@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="App_Title" xml:space="preserve"><value>ArcheryRhythm</value></data>
+  <data name="Loading" xml:space="preserve"><value>Loading…</value></data>
+
+  <data name="Nav_Training" xml:space="preserve"><value>Training</value></data>
+  <data name="Nav_Settings" xml:space="preserve"><value>Settings</value></data>
+
+  <data name="Training_Title" xml:space="preserve"><value>Training</value></data>
+  <data name="Training_Arrow" xml:space="preserve"><value>Arrow</value></data>
+  <data name="Training_Stage" xml:space="preserve"><value>Stage</value></data>
+  <data name="Training_Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Training_Start" xml:space="preserve"><value>Start</value></data>
+  <data name="Training_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Training_Resume" xml:space="preserve"><value>Resume</value></data>
+  <data name="Training_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="Training_CurrentSettings" xml:space="preserve"><value>Current settings</value></data>
+
+  <data name="Settings_Title" xml:space="preserve"><value>Settings</value></data>
+  <data name="Settings_PrepareSeconds" xml:space="preserve"><value>Prepare (seconds)</value></data>
+  <data name="Settings_DrawSeconds" xml:space="preserve"><value>Draw to anchor (seconds)</value></data>
+  <data name="Settings_AimSeconds" xml:space="preserve"><value>Aim/Expansion (seconds)</value></data>
+  <data name="Settings_ArrowsPerEnd" xml:space="preserve"><value>Arrows per end</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Settings_SpeechEnabled" xml:space="preserve"><value>Spoken guidance</value></data>
+  <data name="Settings_Voice" xml:space="preserve"><value>Voice</value></data>
+  <data name="Settings_Voice_Default" xml:space="preserve"><value>Default voice</value></data>
+  <data name="Settings_Volume" xml:space="preserve"><value>Volume (0.0–1.0)</value></data>
+  <data name="Settings_TestVoice" xml:space="preserve"><value>Test voice</value></data>
+  <data name="Settings_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Settings_Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="Settings_Export" xml:space="preserve"><value>Export JSON</value></data>
+  <data name="Settings_Import" xml:space="preserve"><value>Import JSON</value></data>
+
+  <data name="Settings_Presets" xml:space="preserve"><value>Presets</value></data>
+  <data name="Settings_PresetName" xml:space="preserve"><value>Preset name</value></data>
+  <data name="Settings_SavePreset" xml:space="preserve"><value>Save preset</value></data>
+  <data name="Settings_LoadPreset" xml:space="preserve"><value>Load preset</value></data>
+  <data name="Settings_LoadPreset_Placeholder" xml:space="preserve"><value>Select a preset…</value></data>
+  <data name="Settings_Load" xml:space="preserve"><value>Load</value></data>
+
+  <data name="Stage_Prepare" xml:space="preserve"><value>Prepare</value></data>
+  <data name="Stage_Draw" xml:space="preserve"><value>Draw to anchor</value></data>
+  <data name="Stage_Aim" xml:space="preserve"><value>Aim &amp; expand</value></data>
+
+  <data name="Count_3" xml:space="preserve"><value>three</value></data>
+  <data name="Count_2" xml:space="preserve"><value>two</value></data>
+  <data name="Count_1" xml:space="preserve"><value>one</value></data>
+  <data name="Cue_Shoot" xml:space="preserve"><value>shoot</value></data>
+
+  <data name="Speech_Unsupported" xml:space="preserve"><value>Speech synthesis is not available in this browser/device.</value></data>
+  <data name="Speech_Error" xml:space="preserve"><value>Speech synthesis failed. Try pressing Start again, selecting another voice, or using another browser.</value></data>
+  <data name="Speech_TestPhrase" xml:space="preserve"><value>Testing speech.</value></data>
+
+  <data name="Audio_Unsupported" xml:space="preserve"><value>Audio playback is not available in this browser/device.</value></data>
+  <data name="Audio_Blocked" xml:space="preserve"><value>Audio playback was blocked. Tap Start again or check browser autoplay settings.</value></data>
+</root>

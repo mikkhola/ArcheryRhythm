@@ -1,0 +1,263 @@
+@page "/settings"
+@using System.Text.Json
+@using ArcheryRhythm.Client.Models
+@using ArcheryRhythm.Client.Services
+@using ArcheryRhythm.Core
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.Extensions.Localization
+@inject SettingsStore Store
+@inject SpeechService Speech
+@inject SpeechTextProvider SpeechText
+@inject IStringLocalizer<SharedResources> T
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<PageTitle>@T["Settings_Title"]</PageTitle>
+
+@if (_loading)
+{
+    <p>@T["Loading"]</p>
+}
+else
+{
+    <div class="settings-root">
+        <div class="d-flex justify-content-between align-items-baseline flex-wrap gap-2">
+            <h1 class="m-0">@T["Settings_Title"]</h1>
+            <a class="btn btn-outline-secondary" href="">@T["Nav_Training"]</a>
+        </div>
+
+        <EditForm Model="_form" OnValidSubmit="SaveAsync" class="mt-3">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">@T["Settings_PrepareSeconds"]</label>
+                            <InputNumber class="form-control" @bind-Value="_form.PrepareSeconds" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">@T["Settings_DrawSeconds"]</label>
+                            <InputNumber class="form-control" @bind-Value="_form.DrawSeconds" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">@T["Settings_AimSeconds"]</label>
+                            <InputNumber class="form-control" @bind-Value="_form.AimSeconds" />
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">@T["Settings_ArrowsPerEnd"]</label>
+                            <InputNumber class="form-control" @bind-Value="_form.ArrowsPerEnd" />
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">@T["Settings_Language"]</label>
+                            <InputSelect class="form-select" @bind-Value="_form.Culture">
+                                <option value="fi-FI">Suomi (fi-FI)</option>
+                                <option value="en-US">English (en-US)</option>
+                            </InputSelect>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <label class="form-label">@T["Settings_Volume"]</label>
+                            <InputNumber class="form-control" @bind-Value="_form.SpeechVolume" step="0.1" />
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="form-check">
+                        <InputCheckbox class="form-check-input" @bind-Value="_form.SpeechEnabled" />
+                        <label class="form-check-label">@T["Settings_SpeechEnabled"]</label>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label">@T["Settings_Voice"]</label>
+                        @if (!_speechSupported)
+                        {
+                            <div class="alert alert-warning mb-2" role="alert">@T["Speech_Unsupported"]</div>
+                        }
+                        <InputSelect class="form-select" @bind-Value="_form.SelectedVoiceUri" disabled="@(!_speechSupported)">
+                            <option value="">@T["Settings_Voice_Default"]</option>
+                            @foreach (var v in _voices)
+                            {
+                                <option value="@v.VoiceUri">@v.Lang — @v.Name</option>
+                            }
+                        </InputSelect>
+
+                        <button type="button" class="btn btn-outline-primary mt-2" @onclick="TestVoiceAsync" disabled="@(!_speechSupported)">
+                            @T["Settings_TestVoice"]
+                        </button>
+                    </div>
+
+                    <div class="d-flex gap-2 flex-wrap mt-4">
+                        <button class="btn btn-primary" type="submit">@T["Settings_Save"]</button>
+                        <button class="btn btn-outline-secondary" type="button" @onclick="ResetDefaultsAsync">@T["Settings_Reset"]</button>
+                        <button class="btn btn-outline-secondary" type="button" @onclick="ExportSettingsAsync">@T["Settings_Export"]</button>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label">@T["Settings_Import"]</label>
+                        <InputFile OnChange="ImportSettingsAsync" accept="application/json" />
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h2 class="h5">@T["Settings_Presets"]</h2>
+
+                <div class="row g-2">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">@T["Settings_PresetName"]</label>
+                        <InputText class="form-control" @bind-Value="_newPresetName" />
+                        <button class="btn btn-outline-primary mt-2" @onclick="SavePresetAsync" disabled="@string.IsNullOrWhiteSpace(_newPresetName)">
+                            @T["Settings_SavePreset"]
+                        </button>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">@T["Settings_LoadPreset"]</label>
+                        <InputSelect class="form-select" @bind-Value="_selectedPresetName">
+                            <option value="">@T["Settings_LoadPreset_Placeholder"]</option>
+                            @foreach (var p in _presets)
+                            {
+                                <option value="@p.Name">@p.Name</option>
+                            }
+                        </InputSelect>
+                        <button class="btn btn-outline-secondary mt-2" @onclick="LoadPresetAsync" disabled="@string.IsNullOrWhiteSpace(_selectedPresetName)">
+                            @T["Settings_Load"]
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _loading = true;
+    private SequenceSettingsForm _form = new();
+    private SequenceSettings _initialSettings = new();
+    private bool _speechSupported = true;
+    private IReadOnlyList<SpeechVoice> _voices = Array.Empty<SpeechVoice>();
+
+    private IReadOnlyList<Preset> _presets = Array.Empty<Preset>();
+    private string _newPresetName = "";
+    private string _selectedPresetName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _initialSettings = await Store.LoadSettingsAsync();
+        _form = SettingsStore.ToForm(_initialSettings);
+
+        _speechSupported = await Speech.IsSupportedAsync();
+        _voices = (await Speech.GetVoicesAsync())
+            .OrderByDescending(v => v.Lang.StartsWith("fi", StringComparison.OrdinalIgnoreCase))
+            .ThenByDescending(v => v.Default)
+            .ThenBy(v => v.Lang)
+            .ThenBy(v => v.Name)
+            .ToArray();
+
+        _presets = await Store.LoadPresetsAsync();
+
+        _loading = false;
+    }
+
+    private async Task SaveAsync()
+    {
+        var settings = SettingsStore.FromForm(_form);
+        await Store.SaveSettingsAsync(settings);
+        await Store.SetCultureAsync(settings.Culture);
+
+        if (!string.Equals(settings.Culture, _initialSettings.Culture, StringComparison.OrdinalIgnoreCase))
+        {
+            Nav.NavigateTo(Nav.Uri, forceLoad: true);
+        }
+        else
+        {
+            _initialSettings = settings;
+        }
+    }
+
+    private async Task ResetDefaultsAsync()
+    {
+        _form = SettingsStore.ToForm(new SequenceSettings());
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task TestVoiceAsync()
+    {
+        var settings = SettingsStore.FromForm(_form);
+        try
+        {
+            await Speech.SpeakAsync(SpeechText.TestPhrase(), settings.SelectedVoiceUri, settings.SpeechVolume, Services.SpeechTextProvider.SpeechLang);
+        }
+        catch
+        {
+        }
+    }
+
+    private async Task ExportSettingsAsync()
+    {
+        var settings = SettingsStore.FromForm(_form);
+        var json = SettingsStore.ToJson(settings);
+        await JS.InvokeVoidAsync("archeryRhythm.files.downloadJson", "archeryrhythm-settings.json", json);
+    }
+
+    private async Task ImportSettingsAsync(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        await using var stream = file.OpenReadStream(maxAllowedSize: 1024 * 1024);
+        using var reader = new StreamReader(stream);
+        var json = await reader.ReadToEndAsync();
+
+        try
+        {
+            var settings = JsonSerializer.Deserialize<SequenceSettings>(json, JsonDefaults.Options);
+            if (settings is null)
+            {
+                return;
+            }
+
+            _form = SettingsStore.ToForm(settings);
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+        }
+    }
+
+    private async Task SavePresetAsync()
+    {
+        var settings = SettingsStore.FromForm(_form);
+        var preset = new Preset
+        {
+            Name = _newPresetName.Trim(),
+            Settings = settings,
+        };
+
+        var updated = _presets.Where(p => !string.Equals(p.Name, preset.Name, StringComparison.OrdinalIgnoreCase))
+            .Append(preset)
+            .OrderByDescending(p => p.CreatedUtc)
+            .ToArray();
+
+        await Store.SavePresetsAsync(updated);
+        _presets = updated;
+        _newPresetName = "";
+    }
+
+    private async Task LoadPresetAsync()
+    {
+        var preset = _presets.FirstOrDefault(p => string.Equals(p.Name, _selectedPresetName, StringComparison.OrdinalIgnoreCase));
+        if (preset is null)
+        {
+            return;
+        }
+
+        _form = SettingsStore.ToForm(preset.Settings);
+        await InvokeAsync(StateHasChanged);
+    }
+}
