@@ -18,7 +18,7 @@ public sealed class TimelineBuilderTests
         var timeline = TimelineBuilder.Build(settings);
         var end = Assert.Single(timeline, e => e.Type == TimelineEventType.End);
 
-        Assert.Equal((5 + 3 + 3) * 3, end.OffsetSeconds, 6);
+        Assert.Equal(((5 + 3 + 3) * 3) + (3 * 2), end.OffsetSeconds, 6);
     }
 
     [Theory]
@@ -77,6 +77,6 @@ public sealed class TimelineBuilderTests
 
         Assert.Equal(StageType.Prepare, stageStarts[3].Stage);
         Assert.Equal(2, stageStarts[3].ArrowIndex);
-        Assert.Equal(5, stageStarts[3].OffsetSeconds, 6);
+        Assert.Equal(8, stageStarts[3].OffsetSeconds, 6);
     }
 }

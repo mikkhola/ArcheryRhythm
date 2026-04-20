@@ -2,6 +2,8 @@ namespace ArcheryRhythm.Core;
 
 public static class TimelineBuilder
 {
+    private const int RestBetweenArrowsSeconds = 3;
+
     public static IReadOnlyList<TimelineEvent> Build(SequenceSettings settings)
     {
         var normalized = settings.Normalize();
@@ -30,6 +32,11 @@ public static class TimelineBuilder
                 ArrowCount = arrowCount,
                 Stage = StageType.Aim,
             });
+
+            if (arrowIndex < arrowCount)
+            {
+                offset += RestBetweenArrowsSeconds;
+            }
         }
 
         timeline.Add(new TimelineEvent
@@ -93,4 +100,3 @@ public static class TimelineBuilder
         }
     }
 }
-

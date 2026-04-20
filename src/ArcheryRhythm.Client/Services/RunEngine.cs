@@ -382,7 +382,7 @@ public sealed class RunEngine : IAsyncDisposable
 
             var text = next.Type switch
             {
-                TimelineEventType.StageStart when next.Stage.HasValue && next.Stage.Value != StageType.Aim => _speechText.Stage(next.Stage.Value),
+                TimelineEventType.StageStart when next.Stage.HasValue && next.Stage.Value is not (StageType.Aim or StageType.Rest) => _speechText.Stage(next.Stage.Value),
                 TimelineEventType.Countdown when next.CountdownValue.HasValue => _speechText.Countdown(next.CountdownValue.Value),
                 TimelineEventType.Shoot => _speechText.Shoot(),
                 _ => null,
@@ -416,8 +416,9 @@ public sealed class RunEngine : IAsyncDisposable
     {
         var s = settings.Normalize();
         var arrowCount = s.ArrowsPerEnd;
+        const int restBetweenArrowsSeconds = 3;
 
-        var segments = new List<StageSegment>(capacity: arrowCount * 3);
+        var segments = new List<StageSegment>(capacity: arrowCount * 4);
         double offset = 0;
 
         for (var arrowIndex = 1; arrowIndex <= arrowCount; arrowIndex++)
@@ -430,6 +431,12 @@ public sealed class RunEngine : IAsyncDisposable
 
             segments.Add(new StageSegment(arrowIndex, arrowCount, StageType.Aim, offset, s.AimSeconds));
             offset += s.AimSeconds;
+
+            if (arrowIndex < arrowCount)
+            {
+                segments.Add(new StageSegment(arrowIndex, arrowCount, StageType.Rest, offset, restBetweenArrowsSeconds));
+                offset += restBetweenArrowsSeconds;
+            }
         }
 
         return segments.ToArray();

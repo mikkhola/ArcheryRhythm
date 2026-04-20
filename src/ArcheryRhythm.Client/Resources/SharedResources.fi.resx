@@ -55,6 +55,7 @@
   <data name="Stage_Prepare" xml:space="preserve"><value>Valmistaudu</value></data>
   <data name="Stage_Draw" xml:space="preserve"><value>Vedä ankkuriin</value></data>
   <data name="Stage_Aim" xml:space="preserve"><value>Tähtää ja laajenna</value></data>
+  <data name="Stage_Rest" xml:space="preserve"><value>Palauta</value></data>
 
   <data name="Count_3" xml:space="preserve"><value>kolme</value></data>
   <data name="Count_2" xml:space="preserve"><value>kaksi</value></data>

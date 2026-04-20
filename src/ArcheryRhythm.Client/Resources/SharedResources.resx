@@ -55,6 +55,7 @@
   <data name="Stage_Prepare" xml:space="preserve"><value>Prepare</value></data>
   <data name="Stage_Draw" xml:space="preserve"><value>Draw to anchor</value></data>
   <data name="Stage_Aim" xml:space="preserve"><value>Aim &amp; expand</value></data>
+  <data name="Stage_Rest" xml:space="preserve"><value>Reset</value></data>
 
   <data name="Count_3" xml:space="preserve"><value>three</value></data>
   <data name="Count_2" xml:space="preserve"><value>two</value></data>
