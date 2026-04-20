@@ -30,9 +30,9 @@
   <data name="Training_CurrentSettings" xml:space="preserve"><value>Nykyiset asetukset</value></data>
 
   <data name="Settings_Title" xml:space="preserve"><value>Asetukset</value></data>
-  <data name="Settings_PrepareSeconds" xml:space="preserve"><value>Valmistelu (sekuntia)</value></data>
+  <data name="Settings_PrepareSeconds" xml:space="preserve"><value>Valmistautuminen (sekuntia)</value></data>
   <data name="Settings_DrawSeconds" xml:space="preserve"><value>Veto ankkuriin (sekuntia)</value></data>
-  <data name="Settings_AimSeconds" xml:space="preserve"><value>Tähtäys/laajennus (sekuntia)</value></data>
+  <data name="Settings_AimSeconds" xml:space="preserve"><value>Tähtäys (sekuntia)</value></data>
   <data name="Settings_ArrowsPerEnd" xml:space="preserve"><value>Nuolia / sarja</value></data>
   <data name="Settings_Language" xml:space="preserve"><value>Kieli</value></data>
   <data name="Settings_SpeechEnabled" xml:space="preserve"><value>Puhuttu ohjaus</value></data>
@@ -54,8 +54,8 @@
 
   <data name="Stage_Prepare" xml:space="preserve"><value>Valmistaudu</value></data>
   <data name="Stage_Draw" xml:space="preserve"><value>Vedä ankkuriin</value></data>
-  <data name="Stage_Aim" xml:space="preserve"><value>Tähtää ja laajenna</value></data>
-  <data name="Stage_Rest" xml:space="preserve"><value>Palauta</value></data>
+  <data name="Stage_Aim" xml:space="preserve"><value>Tähtää</value></data>
+  <data name="Stage_Rest" xml:space="preserve"><value>Jälkipito</value></data>
 
   <data name="Count_3" xml:space="preserve"><value>kolme</value></data>
   <data name="Count_2" xml:space="preserve"><value>kaksi</value></data>
