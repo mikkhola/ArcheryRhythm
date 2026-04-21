@@ -3,7 +3,7 @@ namespace ArcheryRhythm.Core;
 public sealed record SequenceSettings
 {
     public int PrepareSeconds { get; init; } = 10;
-    public int DrawSeconds { get; init; } = 3;
+    public int DrawSeconds { get; init; } = 5;
     public int AimSeconds { get; init; } = 4;
     public int ArrowsPerEnd { get; init; } = 3;
 
