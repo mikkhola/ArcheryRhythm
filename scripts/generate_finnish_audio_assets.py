@@ -13,7 +13,7 @@ def build_cues() -> dict[str, str]:
     # Keep this vocabulary small so it remains easy to cache and ship with the app.
     return {
         "stage_prepare": "Valmistaudu",
-        "stage_draw": "Vedä ankkuriin",
+        "stage_draw": "Nosto, veto ja ankkurointi",
         "count_3": "kolme",
         "count_2": "kaksi",
         "count_1": "yksi",
@@ -66,4 +66,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
